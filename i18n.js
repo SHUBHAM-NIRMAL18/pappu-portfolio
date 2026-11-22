@@ -103,10 +103,13 @@ function setLang(lang) {
     b.classList.toggle('on', on);
     b.setAttribute('aria-pressed', on);
   });
-  try { localStorage.setItem('lang', lang); } catch (e) {}
 }
 
-langBtns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+// Only a visitor's own click is remembered; automatic picks are not saved.
+langBtns.forEach(b => b.addEventListener('click', () => {
+  setLang(b.dataset.lang);
+  try { localStorage.setItem('lang', b.dataset.lang); } catch (e) {}
+}));
 
 let saved = null;
 try { saved = localStorage.getItem('lang'); } catch (e) {}
