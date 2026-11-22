@@ -4,8 +4,13 @@ addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 40), { 
 
 // mobile menu
 const burger = document.getElementById('burger'), links = document.getElementById('links');
-burger.addEventListener('click', () => { burger.classList.toggle('x'); links.classList.toggle('open'); });
-links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { burger.classList.remove('x'); links.classList.remove('open'); }));
+const setMenu = open => {
+  burger.classList.toggle('x', open);
+  links.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+};
+burger.addEventListener('click', () => setMenu(!links.classList.contains('open')));
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
 // tabs
 document.querySelectorAll('.tabs').forEach(t => {
