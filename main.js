@@ -7,6 +7,16 @@ const burger = document.getElementById('burger'), links = document.getElementByI
 burger.addEventListener('click', () => { burger.classList.toggle('x'); links.classList.toggle('open'); });
 links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { burger.classList.remove('x'); links.classList.remove('open'); }));
 
+// tabs
+document.querySelectorAll('.tabs').forEach(t => {
+  t.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const body = t.parentElement;
+    t.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    body.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === b.dataset.t));
+  });
+});
+
 // counters
 const count = el => {
   const to = parseFloat(el.dataset.to), dec = +(el.dataset.dec || 0), suf = el.dataset.suf || '';
