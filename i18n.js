@@ -111,6 +111,36 @@ langBtns.forEach(b => b.addEventListener('click', () => {
   try { localStorage.setItem('lang', b.dataset.lang); } catch (e) {}
 }));
 
-let saved = null;
-try { saved = localStorage.getItem('lang'); } catch (e) {}
-setLang(saved || ((navigator.language || '').toLowerCase().startsWith('sv') ? 'sv' : 'en'));
+// Default language by country: Sweden -> Swedish, everywhere else -> English.
+// A language the visitor picked themselves always wins.
+const langForCountry = cc => (cc === 'SE' ? 'sv' : 'en');
+
+let saved = null, cachedCountry = null;
+try {
+  saved = localStorage.getItem('lang');
+  cachedCountry = sessionStorage.getItem('country');
+} catch (e) {}
+
+if (saved) {
+  setLang(saved);
+} else {
+  // Instant first guess: country from this session, else the device time zone.
+  let tz = '';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+  setLang(cachedCountry ? langForCountry(cachedCountry) : (tz === 'Europe/Stockholm' ? 'sv' : 'en'));
+
+  // Then confirm with the visitor's real country from Cloudflare.
+  if (!cachedCountry) {
+    fetch('/cdn-cgi/trace', { cache: 'no-store' })
+      .then(r => (r.ok ? r.text() : ''))
+      .then(txt => {
+        const m = txt.match(/^loc=([A-Z]{2})$/m);
+        if (!m) return;
+        try { sessionStorage.setItem('country', m[1]); } catch (e) {}
+        let picked = null;
+        try { picked = localStorage.getItem('lang'); } catch (e) {}
+        if (!picked) setLang(langForCountry(m[1]));
+      })
+      .catch(() => {});
+  }
+}
