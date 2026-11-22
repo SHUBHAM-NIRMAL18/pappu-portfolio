@@ -11,7 +11,7 @@
   color-scheme:light;
 }
 :root{color-scheme:dark}
-body,.nav.solid,.band,.stat,.card,.sk,.pipe li,.feature,.ticker,.tag,.lang{transition:background-color .35s,border-color .35s,color .35s}
+body,.nav::before,.band,.stat,.card,.sk,.pipe li,.feature,.ticker,.tag,.lang{transition:background-color .35s,border-color .35s,color .35s}
 [data-theme="light"] body::before{opacity:.035}
 [data-theme="light"] .hero::after{background:radial-gradient(circle,rgba(var(--acc-rgb),.12),transparent 60%)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -33,8 +33,10 @@ h2{font-size:clamp(2.2rem,5.5vw,4rem);margin-bottom:56px}
 
 /* nav */
 .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:24px;padding:18px 4vw;transition:.3s}
-.nav.solid{background:var(--glass-strong);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-block:12px}
-.logo{font-size:1.7rem;font-family:var(--serif)}
+.nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;transition:background-color .3s}
+.nav.solid{border-bottom:1px solid var(--line);padding-block:12px}
+.nav.solid::before{background:var(--glass-strong);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.logo{position:relative;z-index:60;font-size:1.7rem;font-family:var(--serif)}
 .logo span{color:var(--acc)}
 .links{margin-left:auto;display:flex;gap:30px;align-items:center;font-size:.93rem;color:var(--mute)}
 .links a:hover{color:var(--ink)}
