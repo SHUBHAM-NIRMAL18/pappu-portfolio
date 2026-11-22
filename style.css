@@ -49,6 +49,14 @@ h2{font-size:clamp(2.2rem,5.5vw,4rem);margin-bottom:56px}
 .lang button:hover{color:var(--ink)}
 .lang button.on{background:var(--acc);color:var(--bg)}
 
+.theme{position:relative;z-index:60;width:38px;height:38px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--glass);color:var(--ink);cursor:pointer;transition:border-color .2s,transform .3s}
+.theme:hover{border-color:var(--acc);transform:rotate(-15deg)}
+.theme svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;grid-area:1/1;transition:opacity .3s,transform .4s}
+.theme .moon{fill:currentColor;stroke:none}
+.theme .sun{opacity:0;transform:rotate(-90deg) scale(.6)}
+[data-theme="light"] .theme .sun{opacity:1;transform:none}
+[data-theme="light"] .theme .moon{opacity:0;transform:rotate(90deg) scale(.6)}
+
 /* hero */
 .hero{min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:110px 0 120px}
 .hero::after{content:"";position:absolute;width:60vw;height:60vw;right:-15vw;top:-20vw;background:radial-gradient(circle,rgba(var(--acc-rgb),.14),transparent 60%);pointer-events:none}
@@ -162,6 +170,7 @@ strong{font-weight:600;color:var(--ink)}
 @media (max-width:720px){
   body{font-size:16px}
   .lang{margin-left:auto}
+  .nav{gap:10px}
   .burger{display:block;z-index:60}
   .links{position:fixed;inset:0;flex-direction:column;justify-content:center;gap:28px;font-size:1.6rem;font-family:var(--serif);background:var(--bg);color:var(--ink);transform:translateY(-100%);transition:transform .45s cubic-bezier(.7,0,.2,1)}
   .links.open{transform:none}

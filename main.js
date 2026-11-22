@@ -42,4 +42,18 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+// light / dark theme
+const themeBtn = document.getElementById('theme');
+const applyTheme = t => {
+  document.documentElement.dataset.theme = t;
+  themeBtn.setAttribute('aria-label', t === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+  document.getElementById('theme-color').content = t === 'light' ? '#f5f4ee' : '#0b0d0c';
+};
+applyTheme(document.documentElement.dataset.theme || 'dark');
+themeBtn.addEventListener('click', () => {
+  const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  applyTheme(t);
+  try { localStorage.setItem('theme', t); } catch (e) {}
+});
+
 document.getElementById('yr').textContent = new Date().getFullYear();
